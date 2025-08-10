@@ -1,0 +1,13 @@
+tampilakan total user berdasarkan region dan area. 
+strukturnya region, area, total user
+select rtm_region.region_name_rtm as region_name,rtm_area.rtm_area_name as area_name,count(user.id_user) as total_user 
+from rtm_region join rtm_area on (rtm_region.id_region=rtm_area.id_region) join user on (rtm_area.id_area=user.area)
+GROUP BY rtm_region.region_name_rtm, rtm_area.rtm_area_name
+ORDER by rtm_region.region_name_rtm, rtm_area.rtm_area_name
+
+
+Tampilkan total store account alfamart dan region Jabodetabek
+strukturnya region_name	rtm_name	account_name	Total Store
+
+
+
