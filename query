@@ -8,6 +8,26 @@ ORDER by rtm_region.region_name_rtm, rtm_area.rtm_area_name
 
 Tampilkan total store account alfamart dan region Jabodetabek
 strukturnya region_name	rtm_name	account_name	Total Store
+SELECT 
+    rtm_region.region_name_rtm AS region_name,
+    rtm_group.rtm_name,
+    rtm_account.account_name,
+    COUNT(store.id_store) AS total_store
+FROM store
+JOIN rtm_account ON store.account_id = rtm_account.id_account
+JOIN rtm_channel ON rtm_account.Id_channel = rtm_channel.id_channel
+JOIN rtm_group ON rtm_channel.id_rtm = rtm_group.id_rtm
+JOIN rtm_area ON store.store_area = rtm_area.id_area
+JOIN rtm_region ON rtm_area.id_region = rtm_region.id_region
+WHERE rtm_region.region_name_rtm = 'jabodetabek'
+  AND rtm_account.account_name = 'alfamart'
+GROUP BY 
+    rtm_region.region_name_rtm,
+    rtm_group.rtm_name,
+    rtm_account.account_name;
+
+
+
 
 
 
