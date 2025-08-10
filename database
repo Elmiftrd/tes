@@ -1,0 +1,151 @@
+-- 1. rtm_region
+CREATE TABLE rtm_region (
+    id_region INT PRIMARY KEY,
+    region_name_rtm VARCHAR(50) NOT NULL
+);
+
+INSERT INTO rtm_region (id_region, region_name_rtm) VALUES
+(1, 'jabodetabek'),
+(2, 'jawa barat'),
+(3, 'jawa tengah'),
+(4, 'jawa timur');
+
+-- 2. rtm_area
+CREATE TABLE rtm_area (
+    id_area INT PRIMARY KEY,
+    rtm_area_name VARCHAR(50) NOT NULL,
+    id_region INT NOT NULL,
+    FOREIGN KEY (id_region) REFERENCES rtm_region(id_region)
+);
+
+INSERT INTO rtm_area (id_area, rtm_area_name, id_region) VALUES
+(1, 'jakarta', 1),
+(2, 'bandung', 2),
+(3, 'semarang', 3),
+(4, 'surabaya', 4);
+
+-- 3. rtm_group
+CREATE TABLE rtm_group (
+    id_rtm INT PRIMARY KEY,
+    rtm_name VARCHAR(50) NOT NULL
+);
+
+INSERT INTO rtm_group (id_rtm, rtm_name) VALUES
+(1, 'MT'),
+(2, 'GT');
+
+-- 4. rtm_channel
+CREATE TABLE rtm_channel (
+    id_channel INT PRIMARY KEY,
+    nama_channel VARCHAR(50) NOT NULL,
+    id_rtm INT NOT NULL,
+    FOREIGN KEY (id_rtm) REFERENCES rtm_group(id_rtm)
+);
+
+INSERT INTO rtm_channel (id_channel, nama_channel, id_rtm) VALUES
+(1, 'Hypermarket', 1),
+(2, 'Supermarket', 1),
+(3, 'Minimarket', 1),
+(4, 'GT', 2);
+
+-- 5. rtm_account
+CREATE TABLE rtm_account (
+    id_account INT PRIMARY KEY,
+    account_name VARCHAR(50) NOT NULL,
+    id_channel INT NOT NULL,
+    FOREIGN KEY (id_channel) REFERENCES rtm_channel(id_channel)
+);
+
+INSERT INTO rtm_account (id_account, account_name, id_channel) VALUES
+(1, 'carrefour', 1),
+(2, 'alfamart', 3),
+(3, 'indomaret', 3),
+(4, 'alfamidi', 3);
+
+-- 6. user
+CREATE TABLE user (
+    id_user INT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL,
+    password VARCHAR(50) NOT NULL,
+    area INT NOT NULL,
+    FOREIGN KEY (area) REFERENCES rtm_area(id_area)
+);
+
+INSERT INTO user (id_user, username, password, area) VALUES
+(1, 'haris', 'admin', 1),
+(2, 'andi', 'admin', 1),
+(3, 'anto', 'admin', 2),
+(4, 'hendi', 'admin', 2),
+(5, 'rizky', 'admin', 3),
+(6, 'budi', 'admin', 1),
+(7, 'badu', 'admin', 4),
+(8, 'ani', 'admin', 1);
+
+-- 7. store
+CREATE TABLE store (
+    id_store INT PRIMARY KEY,
+    store_code VARCHAR(50) NOT NULL,
+    store_name VARCHAR(50) NOT NULL,
+    store_area INT NOT NULL,
+    account_id INT NOT NULL,
+    FOREIGN KEY (store_area) REFERENCES rtm_area(id_area),
+    FOREIGN KEY (account_id) REFERENCES rtm_account(id_account)
+);
+
+INSERT INTO store (id_store, store_code, store_name, store_area, account_id) VALUES
+(1, 'code1', 'store 1', 1, 1),
+(2, 'code2', 'store 2', 1, 2),
+(3, 'code3', 'store 3', 1, 3),
+(4, 'code4', 'store 4', 1, 4),
+(5, 'code5', 'store 5', 1, 1),
+(6, 'code6', 'store 6', 2, 2),
+(7, 'code7', 'store 7', 2, 3),
+(8, 'code8', 'store 8', 2, 4),
+(9, 'code9', 'store 9', 2, 1),
+(10, 'code10', 'store 10', 2, 2),
+(11, 'code11', 'store 11', 3, 3),
+(12, 'code12', 'store 12', 3, 4),
+(13, 'code13', 'store 13', 3, 1),
+(14, 'code14', 'store 14', 3, 2),
+(15, 'code15', 'store 15', 3, 3),
+(16, 'code16', 'store 16', 3, 4),
+(17, 'code17', 'store 17', 4, 1),
+(18, 'code18', 'store 18', 4, 2),
+(19, 'code19', 'store 19', 4, 3),
+(20, 'code20', 'store 20', 4, 4);
+
+-- 8. journey_plan
+CREATE TABLE journey_plan (
+    id_journeyplan INT PRIMARY KEY,
+    store_id INT NOT NULL,
+    user_id INT NOT NULL,
+    tanggal DATE NOT NULL,
+    FOREIGN KEY (store_id) REFERENCES store(id_store),
+    FOREIGN KEY (user_id) REFERENCES user(id_user)
+);
+
+INSERT INTO journey_plan (id_journeyplan, store_id, user_id, tanggal) VALUES
+(1, 1, 1, '2021-03-01'),
+(2, 2, 1, '2021-03-01'),
+(3, 3, 1, '2021-03-01'),
+(4, 4, 1, '2021-03-02'),
+(5, 5, 1, '2021-03-02'),
+(6, 1, 2, '2021-03-02'),
+(7, 2, 2, '2021-03-02'),
+(8, 3, 2, '2021-03-02'),
+(9, 4, 2, '2021-03-02'),
+(10, 5, 2, '2021-03-03'),
+(11, 6, 3, '2021-03-03'),
+(12, 7, 3, '2021-03-03'),
+(13, 8, 3, '2021-03-03'),
+(14, 9, 3, '2021-03-03'),
+(15, 6, 4, '2021-03-04'),
+(16, 7, 4, '2021-03-04'),
+(17, 8, 4, '2021-03-04'),
+(18, 9, 4, '2021-03-04'),
+(19, 10, 4, '2021-03-05'),
+(20, 11, 5, '2021-03-05'),
+(21, 12, 5, '2021-03-05'),
+(22, 13, 6, '2021-03-05'),
+(23, 14, 6, '2021-03-05'),
+(24, 15, 6, '2021-03-05');
